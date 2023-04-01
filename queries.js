@@ -57,11 +57,11 @@ const getUsers = async (request, response) => {
       });
   
       const result = await client.query(
-        `INSERT INTO users2 (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING id`,
+        `INSERT INTO users2 (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING first_name`,
         [first_name, last_name, email, hashedPassword]
       );
   
-      response.status(200).send(`User added with id: ${result.rows[0].id}`);
+      response.status(200).send(`${result.rows[0].first_name} has been added to the database!`);
     } catch (error) {
       console.error(error);
       response.status(500).send('Internal Server Error');
