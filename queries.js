@@ -5,7 +5,7 @@ const client = new Client({
     user:"postgres",
     host:"127.0.0.1",
     database:"postgres", 
-    password:"Zaeem1198!",
+    password:"Zaeem1198!",  
     port:5432
 });
 
@@ -25,21 +25,33 @@ const getUsers = async (request, response) => {
     try {
       const { first_name, last_name, email, password } = request.body;
 
-           function isValidEmail(email) {
+    function isValidEmail(email) {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
       }
 
+      function isValidPassword(password) {
+        if(password.length >= 8) {
+          return true
+        }else {
+          return false
+        }
+      }
+
       if(!first_name) {
+        console.log('first_name cannot be null')
         return response.status(400).send('First name cannot be null')
       }
       if(!last_name) {
+        console.log('last_name cannot be null')
         return response.status(400).send('Last name cannot be null')
       }
       if(!email) {
+        console.log('email cannot be null')
         return response.status(400).send('Email cannot be null')
       }
       if(!password) {
+        console.log('password cannot be null')
         return response.status(400).send('password cannot be null')
       }
 
@@ -47,6 +59,13 @@ const getUsers = async (request, response) => {
         console.log('email is valid')
       } else {
         return response.status(400).send(`${email} is not a valid email address`);
+      }
+
+      if(isValidPassword(password)) {
+        console.log('password is valid')
+      }else {
+        console.log('password must be at least 8 characters')
+        return response.status(400).send('password must be at least 8 characters!')
       }
 
       const hashedPassword = await new Promise((resolve, reject) => {
@@ -64,7 +83,7 @@ const getUsers = async (request, response) => {
       response.status(200).send(`${result.rows[0].first_name} has been added to the database!`);
     } catch (error) {
       console.error(error);
-      response.status(500).send('Internal Server Error');
+      response.status(500).send('Email already exists!');
     }
   };
   
