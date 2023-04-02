@@ -7,7 +7,20 @@ const client = new Client({
     database:"postgres", 
     password:"Zaeem1198!",  
     port:5432
-});
+}); 
+
+function isValidEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+      }
+
+ function isValidPassword(password) {
+        if(password.length >= 8) {
+          return true
+        }else {
+          return false
+        }
+      }
 
 client.connect();
  
@@ -24,19 +37,6 @@ const getUsers = async (request, response) => {
   const createUser = async (request, response) => {
     try {
       const { first_name, last_name, email, password } = request.body;
-
-    function isValidEmail(email) {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-      }
-
-      function isValidPassword(password) {
-        if(password.length >= 8) {
-          return true
-        }else {
-          return false
-        }
-      }
 
       if(!first_name) {
         console.log('first_name cannot be null')
